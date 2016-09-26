@@ -23,7 +23,7 @@
 		private static function getConnection() {
 			$conn = new \mysqli(Config::get('db_host'), Config::get('db_user'), Config::get('db_pass'), Config::get('db_name'));
 			if($conn->connect_errno) {
-				Logger::log("EXIT! Failed to connect to DB: (" . $conn->connect_errno . ") " . $conn->connect_error);
+				Logger::log("EXIT: Failed to connect to DB: (" . $conn->connect_errno . ") " . $conn->connect_error);
 				exit();
 			}
 
@@ -33,7 +33,7 @@
 		public static function query($sql) {
 			$response = self::$mysqli->query($sql);
 			if(!$response) {
-				Logger::log("Invalid query: " . self::$mysqli->error);
+				Logger::log("EXIT: Invalid query: " . self::$mysqli->error);
 				exit();
 			}
 			return $response;

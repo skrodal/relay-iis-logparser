@@ -178,7 +178,7 @@
 			if(file_exists($file_path)) {
 				return explode(PHP_EOL, file_get_contents($file_path));
 			}
-			Logger::log('EXIT! Log file ' . $file_path . ' could not be found!');
+			Logger::log('EXIT: Log file ' . $file_path . ' could not be found!');
 			exit();
 		}
 	}

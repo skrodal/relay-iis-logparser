@@ -17,7 +17,9 @@
 	if(defined('STDIN') && isset($argv[1])) {
 		$argv[1] = strtoupper($argv[1]);
 		Logger::init($VERBOSE_LOG);
-		Logger::log("SCREENCAST IIS LOGPARSER: Starting a new run of type [$argv[1]] for " . gethostname());
+		Logger::log("SCREENCAST IIS LOGPARSER: Starting a new run of type [$argv[1]]");
+		Logger::log("Info: I am running on server: " . gethostname());
+		Logger::log("Info: My path is: " . __DIR__);
 
 		switch($argv[1]) {
 			case "UPDATE":
@@ -28,12 +30,12 @@
 			case "RESET":
 				confirmReset();
 				Config::init($CONFIG_PATH);
-				Logger::log("Dropping and rebuilding DB tables!");
+				Logger::log("Process: Dropping and rebuilding DB tables!");
 				SQL::RESET();
-				Logger::log("Done! The service has been cleaned.");
+				Logger::log("Summary: Done! The service has been cleaned.");
 				break;
 			default:
-				Logger::log("EXIT! Parameter [$argv[1]] is unknown to me - I expected 'UPDATE' or 'RESET'.");
+				Logger::log("EXIT: Parameter [$argv[1]] is unknown to me - I expected 'UPDATE' or 'RESET'.");
 				break;
 		}
 		Logger::log("End of [$argv[1]].");
@@ -41,7 +43,7 @@
 		exit();
 	}
 
-	Logger::log("EXIT! Missing required parameter (hint: expected 'full' or 'latest')");
+	Logger::log("EXIT: Missing required parameter (hint: expected 'full' or 'latest')");
 
 	function confirmReset(){
 		$br = PHP_EOL.PHP_EOL;

@@ -10,7 +10,7 @@
 
 		private static function loadConfig($config_path) {
 			if(!file_exists($config_path)) {
-				Logger::log("EXIT! Log file not found at " . $config_path);
+				Logger::log("EXIT: Log file not found at " . $config_path);
 				exit();
 			}
 
@@ -20,7 +20,7 @@
 			             'min_hit_diff_sec'   => $config['min_hit_diff_sec'],
 			             'presentation_depth' => $config['presentation_depth']];
 
-			Logger::log('Loaded config with the following settings: ' . json_encode($settings, JSON_PRETTY_PRINT));
+			Logger::log('Info: Loaded config with the following settings: ' . json_encode($settings, JSON_PRETTY_PRINT));
 
 			return $config;
 		}
