@@ -21,8 +21,9 @@ The intention is that the script be run automatically (e.g. cronjob) once every 
 Config fields explained:
 
 - `iis_log_path` : points to the folder where all IIS logs are kept (typically a samba mount to the Windows Server's IIS log folder).    
-- `min_hit_diff_sec` : do not record more than one hit for a presentation for a unique IP within this timeframe (e.g. 7200 for 2 hours). 
-- `presentation_depth`: folder depth to presentation base path (pends on publishing structure of Relay content):
+- `min_hit_diff_sec` : do not record more than one hit for a presentation for a unique IP within this timeframe (e.g. 7200 for 2 hours).
+- `username_depth`: folder depth to username folder (pends on publishing structure of Relay content) - start counting from 1.
+- `presentation_depth`: folder depth to presentation base path (pends on publishing structure of Relay content) - start counting from 1:
 
 Interesting GET request in the IIS log look something like this:
 
@@ -44,7 +45,7 @@ See `sql.class.php` function `RESET` for the structure of these tables.
 
 ### Table `presentations_hits`
 
-Stores fields `path` (unique), `hits` (accumulated) and `timestamp_latest` (the last recorded hit on this presentation).
+Stores fields `path` (unique), `hits` (accumulated), `timestamp_latest` (the last recorded hit on this presentation) and `username` (without the ampersand).
 
 The `path` is the basepath for a presentation, and since the publishing structure of our setup includes  
 the Relay username in the path, we can do queries such as

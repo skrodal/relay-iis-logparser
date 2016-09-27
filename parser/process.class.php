@@ -51,6 +51,10 @@
 					// Hits and latest found timestamp for this presentation path
 					$hits      = 0;
 					$timestamp = 0;
+					// Get the username from the path (sometimes '@' is missing, so lets normalise on that)
+					$username = explode('/', $path);
+					$username = $username[Config::get('username_depth')-1];
+					$username = str_replace("@","",$username);
 					// Loop logged IPs and their info
 					foreach($ips as $ip => $hitinfo) {
 						// Accumulate all hits
@@ -60,7 +64,7 @@
 						$timestamp = ($hitinfo['last_access'] > $timestamp) ? $hitinfo['last_access'] : $timestamp;
 					}
 					// Insert/update record for this presentation (will exit if query fails)
-					SQL::updateHitsTable($path, $hits, $timestamp);
+					SQL::updateHitsTable($path, $hits, $timestamp, $username);
 				}
 				// If earliest timestamp logged in this file is older (less) than what we have on record
 				if($presentations['info']['first_record_timestamp'] < $first_record_timestamp){

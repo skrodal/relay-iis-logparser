@@ -103,13 +103,13 @@
 		 * @param $hits
 		 * @param $timestamp
 		 */
-		public static function updateHitsTable($path, $hits, $timestamp){
+		public static function updateHitsTable($path, $hits, $timestamp, $username){
 			// If path already exists, only add hits if found timestamp is newer than latest recorded
 			// (we do not want to increment hits each time we run the script)
 			$tblHits  = Config::get('db_table_hits');
 			self::query(
-				"INSERT INTO $tblHits (path, hits, timestamp_latest) " .
-				"VALUES ('$path', $hits, $timestamp) " .
+				"INSERT INTO $tblHits (path, hits, timestamp_latest, username) " .
+				"VALUES ('$path', $hits, $timestamp, '$username') " .
 				"ON DUPLICATE KEY UPDATE " .
 				"hits = IF (timestamp_latest < $timestamp, hits + $hits, hits), " .
 				"timestamp_latest = IF (timestamp_latest < $timestamp, $timestamp, timestamp_latest)"
@@ -146,6 +146,7 @@
 				"path text NOT NULL," .
 				"hits int(11) NOT NULL DEFAULT 0," .
 				"timestamp_latest int(11) NOT NULL DEFAULT 0," .
+				"username varchar(50) NOT NULL," .
 				"UNIQUE KEY path (path(170))" .
 				") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
