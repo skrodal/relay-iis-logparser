@@ -13,6 +13,10 @@ our use-case does not call for it.
 
 The intention is that the script be run automatically (e.g. cronjob) once every 24 hours. A different API will make use of the data this service harvests.
 
+> 15.12.2016: See branch for a start on pulling in presId and userId from Relay's own DB. 
+This info would be useful in the presHits table for APIs trying to match presentation paths with a user (since usernames may change (e.g. fusjonering) 
+while IDs are constant). Did not have time to finish off this feature (testing and implementing in APIs, Min Relay specifically)
+
 ## Configure
 
 1. Fill in settings in `etc/config.json` and point `$CONFIG_PATH` in `index.php` to this config file.

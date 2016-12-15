@@ -142,7 +142,7 @@
 			self::query(
 				"UPDATE $tblHits" .
 				"SET userId = $userId, presId = $presId " .
-				"WHERE path = '$path' "
+				"WHERE path = '$path'"
 			);
 		}
 
@@ -177,6 +177,8 @@
 				"hits int(11) NOT NULL DEFAULT 0," .
 				"timestamp_latest int(11) NOT NULL DEFAULT 0," .
 				"username varchar(50) NOT NULL," .
+				"presId int(11) DEFAULT NULL," .
+				"userId int(11) DEFAULT NULL," .
 				"UNIQUE KEY path (path(170))" .
 				") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
