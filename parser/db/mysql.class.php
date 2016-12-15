@@ -4,7 +4,7 @@
 	use Parser\Utils\Config;
 	use Parser\Utils\Logger;
 
-	class SQL {
+	class MySQL {
 		private static $mysqli;
 
 		public static function escape($string) {
@@ -35,6 +35,19 @@
 			if(!$response) {
 				Logger::log("EXIT: Invalid query: " . self::$mysqli->error);
 				exit();
+			}
+			return $response;
+		}
+
+		public static function getPathsWithNoUserId(){
+			$tblHits  = Config::get('db_table_hits');
+			$result = self::query(
+				"SELECT * FROM $tblHits " .
+				"WHERE userid = NULL "
+			);
+			$response = [];
+			foreach($result->fetch_assoc() as $row) {
+				$response[] = $row;
 			}
 			return $response;
 		}
@@ -102,6 +115,7 @@
 		 * @param $path
 		 * @param $hits
 		 * @param $timestamp
+		 * @param $username
 		 */
 		public static function updateHitsTable($path, $hits, $timestamp, $username){
 			// If path already exists, only add hits if found timestamp is newer than latest recorded
@@ -113,6 +127,22 @@
 				"ON DUPLICATE KEY UPDATE " .
 				"hits = IF (timestamp_latest < $timestamp, hits + $hits, hits), " .
 				"timestamp_latest = IF (timestamp_latest < $timestamp, $timestamp, timestamp_latest)"
+			);
+		}
+
+		/**
+		 * Add presId and userId as a separate operation (pulled from Relay DB).
+		 *
+		 * @param $path
+		 * @param $userId
+		 * @param $presId
+		 */
+		public static function updateHitsTableWithIDs($path, $userId, $presId){
+			$tblHits  = Config::get('db_table_hits');
+			self::query(
+				"UPDATE $tblHits" .
+				"SET userId = $userId, presId = $presId " .
+				"WHERE path = '$path' "
 			);
 		}
 

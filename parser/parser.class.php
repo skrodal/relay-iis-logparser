@@ -2,7 +2,7 @@
 
 	namespace Parser;
 
-	use Parser\DB\SQL;
+	use Parser\DB\MySQL;
 	use Parser\Utils\Config;
 	use Parser\Utils\Logger;
 
@@ -115,7 +115,7 @@
 			// Now we need to post-process this logfile and filter out unique IPs and limit hits on time
 			// (same IP logged as accessing same file several times a minute should not count)
 			// We also want to make sure that we don't count old loglines - hence pull the latest timestamp from our info table:
-			$last_recorded_timestamp = SQL::getLastRecordTimestamp();
+			$last_recorded_timestamp = MySQL::getLastRecordTimestamp();
 			//
 			foreach($relay_log_lines as $key => $fields) {
 				$TIMESTAMP = $fields['time'];
@@ -123,7 +123,7 @@
 				$IP = $fields['c-ip'];
 				// Only do something if this log line is newer than the latest recorded entry in our DB
 				if($TIMESTAMP > $last_recorded_timestamp) {
-					$PRES_PATH = SQL::escape($PRES_PATH);
+					$PRES_PATH = MySQL::escape($PRES_PATH);
 					// Build data structure, where path is the key (also unique in DB):
 					//	"__PATH__": {
 					//	    "__IP__": {

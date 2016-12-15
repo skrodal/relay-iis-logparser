@@ -1,4 +1,4 @@
 .idea
-test
 output/log/*.json
-config.js
+output/
+etc/config.json

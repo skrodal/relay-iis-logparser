@@ -5,13 +5,13 @@
 	date_default_timezone_set('Europe/Oslo');
 	ini_set("memory_limit", "256M");  // `bytes exhausted` insurance...
 	require_once ('loader.php');
-	use Parser\DB\SQL;
+	use Parser\DB\MySQL;
 	use Parser\Process;
 	use Parser\Utils\Config;
 	use Parser\Utils\Logger;
 	//
 	$VERBOSE_LOG     = true;
-	$CONFIG_PATH     = __DIR__ . '/etc/config.js';
+	$CONFIG_PATH     = __DIR__ . '/etc/config.json';
 	$OUTPUT_LOG_PATH = __DIR__ . '/output/log/';
 	//
 	if(defined('STDIN') && isset($argv[1])) {
@@ -31,7 +31,7 @@
 				confirmReset();
 				Config::init($CONFIG_PATH);
 				Logger::log("Process: Dropping and rebuilding DB tables!");
-				SQL::RESET();
+				MySQL::RESET();
 				Logger::log("Summary: Done! The service has been cleaned.");
 				break;
 			default:

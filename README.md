@@ -15,7 +15,7 @@ The intention is that the script be run automatically (e.g. cronjob) once every 
 
 ## Configure
 
-1. Fill in settings in `etc/config.js` and point `$CONFIG_PATH` in `index.php` to this config file.
+1. Fill in settings in `etc/config.json` and point `$CONFIG_PATH` in `index.php` to this config file.
 2. Point $OUTPUT_LOG_PATH to the folder where you would like to store logs for each run.
 
 Config fields explained:
@@ -25,13 +25,13 @@ Config fields explained:
 - `username_depth`: folder depth to username folder (pends on publishing structure of Relay content) - start counting from 1.
 - `presentation_depth`: folder depth to presentation base path (pends on publishing structure of Relay content) - start counting from 1:
 
-Interesting GET request in the IIS log look something like this:
+GET requests of interest in the IIS log look something like this:
 
     GET */relay/ansatt/username.no/year/date/random_num*/presentation_name_and_quality/media/video.mp4
 
-We're interested in the base path for the presentation, which is up to and including the *random* folder. 
-In this Relay publishing setup, the publishing depth is 6, and a number of media formats for this presentation will live in 
-subfolders of this basepath.
+We're interested in the base path for the presentation, which is up to and including the *random_num* folder. 
+In the current Relay publishing setup (configured in Relay Server), the publishing depth is 6, and a number of 
+media formats for this presentation will live in subfolders of this basepath.
 
 ## Tables
 
@@ -41,7 +41,7 @@ The service requires three tables:
 - `presentations_hits_daily`
 - `presentations_hits_info`
 
-See `sql.class.php` function `RESET` for the structure of these tables. 
+See `mysql.class.php` function `RESET` for the structure of these tables. 
 
 ### Table `presentations_hits`
 
@@ -97,7 +97,6 @@ The info table is used for tracking simple data about the logs and assist the pa
 we only have IIS traffic logs starting from `first_record_timestamp`.
  
 `last_logfile_read` and `last_record_timestamp` are useful for the parser on `update` jobs (don't have to scan GB of already processed data). 
-
 
 ## Run
 
